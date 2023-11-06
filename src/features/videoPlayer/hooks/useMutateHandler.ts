@@ -186,10 +186,10 @@ export const useMutateHandler = () => {
         },
         nodsPageId,
       });
-      await compressSegmentsMutation.mutate({ segments, nodsPageId });
+      compressSegmentsMutation.mutate({ segments, nodsPageId });
       const vttText = convertToVTT(segments);
-      await summarisedVttMutation.mutate({ vttText, nodsPageId });
-      await videoTitleMutation.mutate(vttText);
+      summarisedVttMutation.mutate({ vttText, nodsPageId });
+      videoTitleMutation.mutate(vttText);
     },
     {
       onError: (err: any) => {
