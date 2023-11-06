@@ -71,6 +71,7 @@ export const useMutateHandler = () => {
       const blob = new Blob([resp_summerize], { type: 'text/vtt' });
       const file = new File([blob], 'text.vtt', { type: 'text/vtt' });
       useMutateUploadVtt.mutate({ files: [file], nodsPageId });
+      return vttText;
     },
     {
       onError: (err: any) => {
@@ -111,24 +112,15 @@ export const useMutateHandler = () => {
   const compressSegmentsMutation = useMutation(
     async (input: compressSegmentsType) => {
       const { segments, nodsPageId } = input;
-      // await fetch('/api/openai/generate-embeddings', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     page_id: nodsPageId,
-      //     segments: compressSegments(segments),
-      //   }),
-      // });
       const body = JSON.stringify({
-        segments: compressSegments(segments),
+        segments,
       });
+      console.log(body);
       const resultList = (await api_call_post('/api/openai/generate-embeddings', body)) as Result[];
+      console.log(resultList);
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log(resultList);
       resultList.forEach(async (result_) => {
         const row: Tables['nods_page_section']['Insert'] = {
           page_id: nodsPageId,
@@ -140,6 +132,8 @@ export const useMutateHandler = () => {
         };
         await supabase.from('nods_page_section').insert(row).select().limit(1).single();
       });
+      const vttText = convertToVTT(segments);
+      return vttText;
     },
     {
       onError: (err: any) => {
@@ -186,10 +180,8 @@ export const useMutateHandler = () => {
         },
         nodsPageId,
       });
-      compressSegmentsMutation.mutate({ segments, nodsPageId });
-      const vttText = convertToVTT(segments);
-      summarisedVttMutation.mutate({ vttText, nodsPageId });
-      videoTitleMutation.mutate(vttText);
+      return segments;
+
     },
     {
       onError: (err: any) => {
@@ -198,5 +190,10 @@ export const useMutateHandler = () => {
     }
   );
 
-  return { transcriptMutation, compressSegmentsMutation };
+  return {
+    transcriptMutation,
+    compressSegmentsMutation,
+    summarisedVttMutation,
+    videoTitleMutation,
+  };
 };
