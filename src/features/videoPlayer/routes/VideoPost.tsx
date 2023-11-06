@@ -17,7 +17,9 @@ export const VideoPost = ({ nodsPageId, refetch }: { nodsPageId: number; refetch
   const loading =
     useMutateUploadVideo.isLoading ||
     transcriptMutation.isLoading ||
-    compressSegmentsMutation.isLoading;
+    compressSegmentsMutation.isLoading ||
+    summarisedVttMutation.isLoading ||
+    videoTitleMutation.isLoading;
 
   useEffect(() => {
     if (!transcriptMutation.isSuccess) return;
