@@ -18,20 +18,25 @@ async function generate_embeddings(segments: Segment[]) {
       model: 'text-embedding-ada-002',
       input: segment.text,
     });
-    return embeddingResponse.data;
+    const { embedding } = embeddingResponse.data[0];
+    return { segment, embedding };
   };
 
-  const res = [];
-
   // eslint-disable-next-line no-restricted-syntax
-  for (const segment of segments) {
-    console.log(segment);
-    // eslint-disable-next-line no-await-in-loop
-    const data = await getEmbedding(segment);
-    const { embedding } = data[0];
-    console.log(embedding);
-    res.push({ segment, embedding });
-  }
+  // for (const segment of segments) {
+  //   console.log(segment);
+  //   // eslint-disable-next-line no-await-in-loop
+  //   const data = await getEmbedding(segment);
+  //   const { embedding } = data[0];
+  //   console.log(embedding);
+  //   res.push({ segment, embedding });
+  // }
+
+  const res = await Promise.all(
+    segments.map((segment) => {
+      return getEmbedding(segment);
+    })
+  );
   return res;
 }
 
