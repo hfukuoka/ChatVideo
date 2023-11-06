@@ -28,7 +28,6 @@ async function summarize_to_chapter(vttText: string) {
       max_tokens: 512,
       temperature: 0.8,
     });
-    console.log(res);
     return res;
   };
   const res_completion = await req_function();

@@ -30,21 +30,6 @@ const ChatPage = () => {
     refetch,
   } = useQueryNodsPage(router.query?.id as string);
 
-  // const getMatchContext = async (page_id: number, question: string) => {
-  //   const response = await fetch('/api/openai/vector-search', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       page_id,
-  //       question,
-  //     }),
-  //   });
-  //   const data = await response.json();
-  //   console.log(data);
-  // };
-
   const videoComponent = (): ReactNode => {
     if (nods_page?.video_url && user?.id && nods_page?.vtt_url) {
       return (

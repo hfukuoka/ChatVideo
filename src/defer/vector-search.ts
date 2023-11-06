@@ -4,7 +4,6 @@ import { defer } from '@defer/client';
 // openai APIを用いた長い非同期処理
 async function vector_search(question: string) {
   const sanitizedQuery = question.trim();
-  console.log('serverless funcation called');
 
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 

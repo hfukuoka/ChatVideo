@@ -115,9 +115,7 @@ export const useMutateHandler = () => {
       const body = JSON.stringify({
         segments,
       });
-      console.log(body);
       const resultList = (await api_call_post('/api/openai/generate-embeddings', body)) as Result[];
-      console.log(resultList);
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -165,7 +163,6 @@ export const useMutateHandler = () => {
         `/api/openai/whisper`,
         formData
       )) as wisperResponseBody;
-      console.log(transcript_data);
 
       const segments = transcript_data?.segments.map((segment: any) => ({
         id: segment.id,

@@ -24,8 +24,6 @@ export const VideoPost = ({ nodsPageId, refetch }: { nodsPageId: number; refetch
   useEffect(() => {
     if (!transcriptMutation.isSuccess) return;
     const segments = transcriptMutation.data;
-    console.log(segments);
-    console.log('compressSegmentsMutaion called');
     compressSegmentsMutation.mutate({ segments, nodsPageId });
   }, [transcriptMutation.isSuccess]);
 
