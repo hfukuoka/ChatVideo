@@ -181,6 +181,7 @@ export const useMutateHandler = () => {
         nodsPageId,
       });
       return segments;
+
     },
     {
       onError: (err: any) => {
